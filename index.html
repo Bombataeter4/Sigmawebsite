@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vraag en Antwoord</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f3f3f3;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 1rem;
+        }
+
+        #response {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vraag en Antwoord</h1>
+    <input type="text" id="question" placeholder="Stel je vraag hier...">
+    <button onclick="askQuestion()">Stel Vraag</button>
+    <div id="response"></div>
+
+    <script>
+        async function askQuestion() {
+            const question = document.getElementById('question').value;
+            const responseDiv = document.getElementById('response');
+
+            // Maak de prompt dynamisch met je specifieke stijl
+            const prompt = `Geef advies alsof je een man bent die nergens wat om geeft behalve zichzelf.\nVraag: ${question}\nAdvies:`;
+
+            // Verstuur naar de Hugging Face API
+            const response = await fetch('https://api-inference.huggingface.co/models/gpt2', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer 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',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ inputs: prompt })
+            });
+
+            const data = await response.json();
+            if (data.error) {
+                responseDiv.textContent = 'Er is een fout opgetreden: ' + data.error;
+            } else {
+                responseDiv.textContent = data[0]?.generated_text || 'Geen antwoord gevonden.';
+            }
+        }
+    </script>
+</body>
+</html>
