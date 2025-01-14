@@ -42,18 +42,18 @@
 <body>
     <h1>Oud naar Modern Nederlands</h1>
     <textarea id="input" placeholder="Voer hier de Oud-Nederlandse tekst in..."></textarea>
-    <button onclick="translateText()">Translate</button>
+    <button onclick="translate()">Translate</button>
     <div id="response"></div>
 
     <script>
-        async function translateText() {
+        async function translate() {
             const inputText = document.getElementById('input').value;
             const responseDiv = document.getElementById('response');
 
-            const prompt = `Je bent een taalexpert gespecialiseerd in het vertalen van oude Nederlandse teksten naar eenvoudig en modern Nederlands. Je taak is om historische teksten zo duidelijk mogelijk te vertalen naar een begrijpelijke en vloeiende moderne tekst, zonder de betekenis te verliezen. Maak de tekst simpel, maar behoud de betekenis en context.\n\nVertaal de volgende oude Nederlandse tekst naar modern Nederlands:\n\n${inputText}`;
+            const prompt = `Vertaal de volgende tekst van Oud naar Modern Nederlands:\n\n${inputText}`;
 
             try {
-                const response = await fetch('https://api-inference.huggingface.co/models/ReBatch/Llama-3-8B-dutch', {
+                const response = await fetch('https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-nl-en', {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer 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',
@@ -76,6 +76,7 @@
     </script>
 </body>
 </html>
+
 
 
     </script>
