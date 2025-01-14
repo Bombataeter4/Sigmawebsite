@@ -50,7 +50,11 @@
             const inputText = document.getElementById('input').value;
             const responseDiv = document.getElementById('response');
 
-            const prompt = `Translate the following historical Dutch text into English. Keep the meaning and context intact, and ensure the translation is clear and understandable:\n\n${inputText}`;
+            // Tijdelijke melding voor de gebruiker
+            responseDiv.textContent = 'Bezig met vertalen, even geduld...';
+
+            // Aangepaste, eenvoudigere prompt
+            const prompt = `Translate to English:\n\n${inputText}`;
 
             try {
                 const response = await fetch('https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-nl-en', {
@@ -64,10 +68,15 @@
 
                 const data = await response.json();
 
+                // Log de volledige API-respons in de browserconsole
+                console.log("API-respons:", data);
+
                 if (data.error) {
                     responseDiv.textContent = 'Er is een fout opgetreden: ' + data.error;
+                } else if (data[0]?.generated_text) {
+                    responseDiv.textContent = data[0].generated_text;
                 } else {
-                    responseDiv.textContent = data[0]?.generated_text || 'Geen vertaling beschikbaar.';
+                    responseDiv.textContent = 'Geen vertaling beschikbaar. Controleer de invoer of probeer opnieuw.';
                 }
             } catch (error) {
                 responseDiv.textContent = 'Er is een fout opgetreden: ' + error.message;
@@ -76,3 +85,4 @@
     </script>
 </body>
 </html>
+
