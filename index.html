@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oud naar Engels</title>
+    <title>Oud naar Modern Nederlands</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,7 +40,7 @@
     </style>
 </head>
 <body>
-    <h1>Oud naar Engels</h1>
+    <h1>Oud naar Modern Nederlands</h1>
     <textarea id="input" placeholder="Voer hier de Oud-Nederlandse tekst in..."></textarea>
     <button onclick="translateText()">Translate</button>
     <div id="response"></div>
@@ -50,38 +50,49 @@
             const inputText = document.getElementById('input').value;
             const responseDiv = document.getElementById('response');
 
-            // Tijdelijke melding voor de gebruiker
             responseDiv.textContent = 'Bezig met vertalen, even geduld...';
 
-            // Aangepaste, eenvoudigere prompt
-            const prompt = `Translate to English:\n\n${inputText}`;
-
             try {
-                const response = await fetch('https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-nl-en', {
+                const response = await fetch('http://localhost:8000/v1/chat/completions', {
                     method: 'POST',
                     headers: {
-                        'Authorization': 'Bearer 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',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer EMPTY' // Geen sleutel nodig voor lokaal draaien
                     },
-                    body: JSON.stringify({ inputs: prompt })
+                    body: JSON.stringify({
+                        model: "mistralai/Ministral-8B-Instruct-2410",
+                        messages: [
+                            {
+                                role: "user",
+                                content: `Vertaal de volgende oud-Nederlandse tekst naar modern Nederlands:\n\n${inputText}`
+                            }
+                        ],
+                        temperature: 0.3,
+                        max_tokens: 2000,
+                        top_p: 0.9,
+                        frequency_penalty: 0.1,
+                        presence_penalty: 0
+                    })
                 });
 
                 const data = await response.json();
 
-                // Log de volledige API-respons in de browserconsole
-                console.log("API-respons:", data);
-
                 if (data.error) {
-                    responseDiv.textContent = 'Er is een fout opgetreden: ' + data.error;
-                } else if (data[0]?.generated_text) {
-                    responseDiv.textContent = data[0].generated_text;
+                    responseDiv.textContent = 'Er is een fout opgetreden: ' + data.error.message;
+                } else if (data.choices && data.choices[0]?.message?.content) {
+                    responseDiv.textContent = data.choices[0].message.content;
                 } else {
-                    responseDiv.textContent = 'Geen vertaling beschikbaar. Controleer de invoer of probeer opnieuw.';
+                    responseDiv.textContent = 'Geen vertaling beschikbaar. Controleer de invoer.';
                 }
             } catch (error) {
                 responseDiv.textContent = 'Er is een fout opgetreden: ' + error.message;
+                console.error("Fout:", error);
             }
         }
+    </script>
+</body>
+</html>
+
     </script>
 </body>
 </html>
