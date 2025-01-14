@@ -50,26 +50,33 @@
             const inputText = document.getElementById('input').value;
             const responseDiv = document.getElementById('response');
 
-            // De prompt zoals aangegeven in de originele code
             const prompt = `Je bent een taalexpert gespecialiseerd in het vertalen van oude Nederlandse teksten naar eenvoudig en modern Nederlands. Je taak is om historische teksten zo duidelijk mogelijk te vertalen naar een begrijpelijke en vloeiende moderne tekst, zonder de betekenis te verliezen. Maak de tekst simpel, maar behoud de betekenis en context.\n\nVertaal de volgende oude Nederlandse tekst naar modern Nederlands:\n\n${inputText}`;
 
-            // API-aanroep naar Hugging Face
-            const response = await fetch('https://api-inference.huggingface.co/models/ReBatch/Llama-3-8B-dutch', {
-                method: 'POST',
-                headers: {
-                    'Authorization': 'Bearer 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',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ inputs: prompt })
-            });
+            try {
+                const response = await fetch('https://api-inference.huggingface.co/models/ReBatch/Llama-3-8B-dutch', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer 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',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ inputs: prompt })
+                });
 
-            const data = await response.json();
-            if (data.error) {
-                responseDiv.textContent = 'Er is een fout opgetreden: ' + data.error;
-            } else {
-                responseDiv.textContent = data[0]?.generated_text || 'Geen vertaling beschikbaar.';
+                const data = await response.json();
+
+                if (data.error) {
+                    responseDiv.textContent = 'Er is een fout opgetreden: ' + data.error;
+                } else {
+                    responseDiv.textContent = data[0]?.generated_text || 'Geen vertaling beschikbaar.';
+                }
+            } catch (error) {
+                responseDiv.textContent = 'Er is een fout opgetreden: ' + error.message;
             }
         }
+    </script>
+</body>
+</html>
+
     </script>
 </body>
 </html>
