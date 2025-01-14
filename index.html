@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oud naar Modern Nederlands</title>
+    <title>Old Dutch Translator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -40,8 +40,8 @@
     </style>
 </head>
 <body>
-    <h1>Oud naar Modern Nederlands</h1>
-    <textarea id="input" placeholder="Voer hier de Oud-Nederlandse tekst in..."></textarea>
+    <h1>Old Dutch Translator</h1>
+    <textarea id="input" placeholder="Enter Old Dutch text here..."></textarea>
     <button onclick="translateText()">Translate</button>
     <div id="response"></div>
 
@@ -50,27 +50,36 @@
             const inputText = document.getElementById('input').value;
             const responseDiv = document.getElementById('response');
 
-            responseDiv.textContent = 'Bezig met vertalen, even geduld...';
+            responseDiv.textContent = 'Translating, please wait...';
 
             try {
                 const response = await fetch('http://localhost:8000/v1/chat/completions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer EMPTY' // Geen sleutel nodig voor lokaal draaien
+                        'Authorization': 'Bearer EMPTY' // No key needed for local setup
                     },
                     body: JSON.stringify({
-                        model: "mistralai/Ministral-8B-Instruct-2410",
+                        model: "meta-llama/Llama-3.1-8B-Instruct", // Correct model
                         messages: [
                             {
+                                role: "system",
+                                content: `
+                                    Je bent een taalexpert gespecialiseerd in het vertalen van oude Nederlandse teksten naar
+                                    eenvoudig en modern Nederlands. Je taak is om historische teksten zo duidelijk mogelijk te vertalen
+                                    naar een begrijpelijke en vloeiende moderne tekst, zonder de betekenis te verliezen. Maak de tekst 
+                                    simpel, maar behoud de betekenis en context.
+                                `
+                            },
+                            {
                                 role: "user",
-                                content: `Vertaal de volgende oud-Nederlandse tekst naar modern Nederlands:\n\n${inputText}`
+                                content: `Vertaal de volgende oude Nederlandse tekst naar modern Nederlands. Houd de tekst eenvoudig, begrijpelijk, 
+                                    en vloeiend voor een modern publiek. Zorg ervoor dat de historische context behouden blijft:\n\n${inputText}`
                             }
                         ],
                         temperature: 0.3,
-                        max_tokens: 2000,
-                        top_p: 0.9,
-                        frequency_penalty: 0.1,
+                        top_p: 1,
+                        frequency_penalty: 0,
                         presence_penalty: 0
                     })
                 });
@@ -78,15 +87,15 @@
                 const data = await response.json();
 
                 if (data.error) {
-                    responseDiv.textContent = 'Er is een fout opgetreden: ' + data.error.message;
+                    responseDiv.textContent = 'An error occurred: ' + data.error.message;
                 } else if (data.choices && data.choices[0]?.message?.content) {
                     responseDiv.textContent = data.choices[0].message.content;
                 } else {
-                    responseDiv.textContent = 'Geen vertaling beschikbaar. Controleer de invoer.';
+                    responseDiv.textContent = 'No translation available. Please check the input.';
                 }
             } catch (error) {
-                responseDiv.textContent = 'Er is een fout opgetreden: ' + error.message;
-                console.error("Fout:", error);
+                responseDiv.textContent = 'An error occurred: ' + error.message;
+                console.error("Error:", error);
             }
         }
     </script>
