@@ -6,38 +6,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Old Dutch Translator</title>
     <style>
+        /* Algemene styling */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Cinzel', serif; /* Klassiek historisch lettertype */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #f7f7f7;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/2/2d/Old_paper_texture.jpg') no-repeat center center;
+            background-size: cover;
+            color: #3e2723; /* Donkerbruin voor een historische sfeer */
+            text-align: center;
         }
 
+        /* Titel styling */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Tekstvak styling */
         textarea {
             width: 80%;
-            height: 100px;
+            height: 120px;
             margin: 10px 0;
-            font-size: 1rem;
+            font-size: 1.2rem;
+            padding: 10px;
+            border: 2px solid #3e2723;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            resize: none;
         }
 
+        /* Knop styling */
         button {
+            background-color: #6d4c41;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
             padding: 10px 20px;
-            font-size: 1rem;
+            font-size: 1.2rem;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
         }
 
+        button:hover {
+            background-color: #5d4037;
+            transform: scale(1.05);
+        }
+
+        /* Responsieve output */
         #response {
             margin-top: 20px;
-            padding: 10px;
+            padding: 15px;
             width: 80%;
-            background: #fff;
-            border: 1px solid #ccc;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #3e2723;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            white-space: pre-wrap; /* Zorgt ervoor dat nieuwe regels correct worden weergegeven */
+        }
+
+        /* Mobielvriendelijk ontwerp */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            textarea {
+                font-size: 1rem;
+            }
+
+            button {
+                font-size: 1rem;
+            }
+
+            #response {
+                font-size: 1rem;
+            }
         }
     </style>
+
+    <!-- Google Fonts voor historisch lettertype -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>Old Dutch Translator</h1>
@@ -57,10 +117,10 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer EMPTY' // No key needed for local setup
+                        'Authorization': 'Bearer EMPTY' // Geen sleutel nodig voor lokaal draaien
                     },
                     body: JSON.stringify({
-                        model: "meta-llama/Llama-3.1-8B-Instruct", // Correct model
+                        model: "meta-llama/Llama-3.1-8B-Instruct",
                         messages: [
                             {
                                 role: "system",
@@ -98,10 +158,6 @@
                 console.error("Error:", error);
             }
         }
-    </script>
-</body>
-</html>
-
     </script>
 </body>
 </html>
