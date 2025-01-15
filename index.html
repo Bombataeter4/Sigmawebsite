@@ -6,22 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Old Dutch Translator</title>
     <style>
-        /* Algemene styling */
         body {
-            font-family: 'Cinzel', serif; /* Klassiek historisch lettertype */
+            font-family: 'Cinzel', serif; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/2/2d/Old_paper_texture.jpg') no-repeat center center;
             background-size: cover;
-            color: #3e2723; /* Donkerbruin voor een historische sfeer */
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #3e2723; 
             text-align: center;
+            transition: background-image 1s ease-in-out; 
         }
 
-        /* Titel styling */
         h1 {
             font-size: 3rem;
             margin-bottom: 20px;
@@ -31,7 +31,6 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
         }
 
-        /* Tekstvak styling */
         textarea {
             width: 80%;
             height: 120px;
@@ -45,7 +44,6 @@
             resize: none;
         }
 
-        /* Knop styling */
         button {
             background-color: #6d4c41;
             color: #fff;
@@ -63,7 +61,6 @@
             transform: scale(1.05);
         }
 
-        /* Responsieve output */
         #response {
             margin-top: 20px;
             padding: 15px;
@@ -73,10 +70,9 @@
             border-radius: 8px;
             font-size: 1.2rem;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-            white-space: pre-wrap; /* Zorgt ervoor dat nieuwe regels correct worden weergegeven */
+            white-space: pre-wrap; 
         }
 
-        /* Mobielvriendelijk ontwerp */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2rem;
@@ -96,7 +92,6 @@
         }
     </style>
 
-    <!-- Google Fonts voor historisch lettertype -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -106,6 +101,26 @@
     <div id="response"></div>
 
     <script>
+        // Array met achtergrondafbeeldingen
+        const backgroundImages = [
+            'Anna_van_Ewsum.jpg',
+            'Medieval_Tongue_Pulling.png',
+            'Weird_Medieval_Art.jpg',
+            'Snail_Joust.jpg',
+            'Groninger_Archieven.jpg'
+        ];
+
+        let currentImageIndex = 0;
+
+        // Functie om de achtergrond te wisselen
+        function changeBackground() {
+            currentImageIndex = (currentImageIndex + 1) % backgroundImages.length; // Wissel naar de volgende afbeelding
+            document.body.style.backgroundImage = `url('${backgroundImages[currentImageIndex]}')`;
+        }
+
+        // Wissel elke 5 seconden de achtergrond
+        setInterval(changeBackground, 5000);
+
         async function translateText() {
             const inputText = document.getElementById('input').value;
             const responseDiv = document.getElementById('response');
@@ -117,7 +132,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer EMPTY' // Geen sleutel nodig voor lokaal draaien
+                        'Authorization': 'Bearer EMPTY'
                     },
                     body: JSON.stringify({
                         model: "meta-llama/Llama-3.1-8B-Instruct",
@@ -160,6 +175,8 @@
         }
     </script>
 </body>
+</html>
+
 </html>
 
 
