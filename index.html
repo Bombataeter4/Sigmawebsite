@@ -101,29 +101,23 @@
     <div id="response"></div>
 
     <script>
-        // Arrays met normale en Minion-achtergrondafbeeldingen
-        const normalBackgrounds = [
+        // Gecombineerde array met normale en Minion-achtergronden
+        const backgroundImages = [
             'Anna_van_Ewsum.jpg',
-            'Weird_Medieval_Art.jpg',
-            'Snail_Joust.jpg',
-            'Groninger_Archieven.jpg'
-        ];
-
-        const minionBackgrounds = [
             'Minion_Medieval_1.jpg',
+            'Weird_Medieval_Art.jpg',
             'Minion_Medieval_2.jpg',
-            'Minion_Medieval_3.jpg'
+            'Snail_Joust.jpg',
+            'Minion_Medieval_3.jpg',
+            'Groninger_Archieven.jpg'
         ];
 
         let currentIndex = 0;
 
         // Functie om de achtergrond te wisselen
         function changeBackground() {
-            const backgrounds = currentIndex % 2 === 0 ? normalBackgrounds : minionBackgrounds;
-            const currentBackground = backgrounds[currentIndex % backgrounds.length];
-
+            const currentBackground = backgroundImages[currentIndex % backgroundImages.length];
             document.body.style.backgroundImage = `url('${currentBackground}')`;
-
             currentIndex++;
         }
 
@@ -186,8 +180,6 @@
 </body>
 </html>
 
-
-</html>
 
 
 
